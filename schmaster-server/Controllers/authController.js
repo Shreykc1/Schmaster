@@ -53,7 +53,7 @@ async function SignUp (req, res)  {
     }
     if(user.id) {
       token = user.id
-      // jwt.verify(token,SECRET_KEY);
+
     } else{
       token = jwt.sign({ email }, SECRET_KEY, { expiresIn: '1000 days' });
     }

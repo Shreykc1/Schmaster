@@ -7,5 +7,12 @@ Router.route('/addStreak')
     .post(streaksController.addStreak);
 
 
+Router.route('/breakStreak')
+    .post(streaksController.breakStreak);
 
+
+Router.route('/getUserStreaks')
+    .post(streaksController.getUserStreaks);
+
+    
 module.exports = Router;

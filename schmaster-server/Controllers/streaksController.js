@@ -1,4 +1,4 @@
-const { User } = require('../Mongoose/Schema');
+const { User, Streaks } = require('../Mongoose/Schema');
 
 const addStreak = async (req, res) => {
     try {
@@ -12,7 +12,7 @@ const addStreak = async (req, res) => {
         const today = new Date();
         today.setHours(0, 0, 0, 0);
 
-        // Ensure streaks is a valid number, default to 0 if not
+    
         let currentStreaks = Number.isNaN(user.streaks) ? 0 : user.streaks;
         if (user.streaks === null || user.streaks === undefined) {
             currentStreaks = 0;
@@ -37,4 +37,49 @@ const addStreak = async (req, res) => {
 
 
 
-module.exports = { addStreak }
+const breakStreak = async (req,res) =>{
+    try {
+        const { token } = req.body;
+        const found = await User.findOne({id: token});
+        if (found){
+            const pushStreak = await Streaks.create({
+                userID: found.id,
+                streaks: found.streaks
+        });
+
+        const user = await User.findOneAndUpdate(
+            { id: token },
+            { $set: { streaks: 0 } }
+        );
+        }
+
+        
+        return res.status(200).send({ message: 'Streaks Updated Successfully' });
+    } catch (error) {
+        return res.status(500).send({ message: error });
+    }
+}
+
+
+
+const getUserStreaks = async (req,res) => {
+    try {
+        const { token } = req.body;
+        const user = await Streaks.find({userID: token});
+    
+        if(!user) throw Error
+    
+        res.status(200).json({
+            message: user
+        });
+    
+    } catch (error) {
+        res.status(500).json({
+            message: error
+        });
+    }
+}
+
+
+
+module.exports = { addStreak, breakStreak, getUserStreaks }

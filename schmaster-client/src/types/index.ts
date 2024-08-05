@@ -6,8 +6,9 @@ export type INewUser = {
 
   export type IUser = {
     id: string;
-    // name: string,
+    name: string,
     email: string,
+    streak: string,
   };
 
   export type IContextType = {

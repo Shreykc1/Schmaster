@@ -7,6 +7,8 @@ import { getCurrentUser } from '../lib/calls';
 export const INITIAL_USER = {
     id: '',
     email: '',
+    name: '',
+    streak: '',
 };
 
 const INITIAL_STATE = {
@@ -37,6 +39,8 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
                     setUser({
                         id: currentAccount.id,
                         email: currentAccount.email,
+                        name: currentAccount.name,
+                        streak: currentAccount.streaks,
                     });
                     setIsAuthenticated(true);
                     return true;

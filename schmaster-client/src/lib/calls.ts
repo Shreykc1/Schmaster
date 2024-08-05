@@ -39,25 +39,6 @@ export const getCurrentUser = async (token:any)=>{
   }
 
 
- const sendToken = async (id:string)=>{
-    
-    return axios.post('http://localhost:3000/auth/sendToken',{
-        id
-    }
-    , {
-      withCredentials: true,
-    })  
-    .then(function (response) {
-      return response.data;
-    })
-    .catch(function (error) {
-      return error;
-  });
-  }
-  
-
-
-
   export const SignUp = async (email: string, password: string)=>{
     return axios.post('http://localhost:3000/auth/SignUp',{
         email,
@@ -81,6 +62,41 @@ export const getCurrentUser = async (token:any)=>{
 
 
 
+ const sendToken = async (id:string)=>{
+    
+    return axios.post('http://localhost:3000/auth/sendToken',{
+        id
+    }
+    , {
+      withCredentials: true,
+    })  
+    .then(function (response) {
+      return response.data;
+    })
+    .catch(function (error) {
+      return error;
+  });
+  }
+  
+
+
+  export const getAllUsers = async ()=>{
+
+    return axios.get('http://localhost:3000/auth/getAllUsers')  
+    .then(function (response) {
+      
+      return response.data;
+    })
+    .catch(function (error) {
+      return error;
+  });
+  }
+
+
+  
+
+
+
 
   /// ========================= STREAKS +++++++++++++++++++
 
@@ -97,29 +113,57 @@ export const getCurrentUser = async (token:any)=>{
     }
   };
 
+
+  // JUST IN CASE IF APP IS LEFT OPEN FOR 24h
   export const StreakUpdater = () => {
     useEffect(() => {
       const interval = setInterval(async () => {
         await addStreak();
-      }, 24 * 60 * 60 * 1000); // 24 hours in milliseconds
+      }, 24 * 60 * 60 * 1000); 
   
-      // Clear interval on component unmount
       return () => clearInterval(interval);
     }, []);
   
-    return null; // This component doesn't render anything
+    return null; 
   };
 
-  
 
-  export const getAllUsers = async ()=>{
 
-    return axios.get('http://localhost:3000/auth/getAllUsers')  
+export const breakStreak = async ()=>{
+    const token = Cookies.get('token');
+    return axios.post('http://localhost:3000/streaks/breakStreak',{
+      token
+    }
+    , {
+      withCredentials: true,
+    })  
     .then(function (response) {
-      
-      return response.data;
+      console.log(response.data.message)
+      return response.data.message;
     })
     .catch(function (error) {
       return error;
   });
+}
+
+
+export const getUserStreaks = async ()=>{
+  const token = Cookies.get('token');
+  return axios.post('http://localhost:3000/streaks/getUserStreaks',{
+    token
   }
+  , {
+    withCredentials: true,
+  })  
+  .then(function (response) {
+    console.log(response.data.message)
+    return response.data.message;
+  })
+  .catch(function (error) {
+    return error;
+});
+}
+
+  
+
+ 

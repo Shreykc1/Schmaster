@@ -28,7 +28,8 @@ module.exports = {
         'dark-1': '#000000',
         'dark-2': '#09090A',
         'dark-3': '#101012',
-        'dark-4': '#1F1F22',
+        'dark-4': '#171717',
+        'dark-5': '#1F1F22',
         'light-1': '#FFFFFF',
         'light-2': '#ebf4fa',
         'light-3': '#73b4f5',
@@ -47,7 +48,8 @@ module.exports = {
       fontFamily: {
         inter: ['Inter', 'sans-serif'],
         neue: ['Neue Haas Grotesk Display Pro', 'sans-serif'],
-        helv: ['Helvetica Neue', 'sans-serif']
+        helv: ['Helvetica Neue', 'sans-serif'],
+        sf: ['SF','sans-serif']
 
       },
       keyframes: {
