@@ -1,0 +1,11 @@
+const express = require('express');
+const Router = express.Router();
+// const protect = require('./protect')
+const streaksController = require('../Controllers/streaksController');
+
+Router.route('/addStreak')
+    .post(streaksController.addStreak);
+
+
+
+module.exports = Router;
