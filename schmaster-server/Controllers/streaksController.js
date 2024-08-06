@@ -64,8 +64,8 @@ const breakStreak = async (req,res) =>{
 
 const getUserStreaks = async (req,res) => {
     try {
-        const { token } = req.body;
-        const user = await Streaks.find({userID: token});
+        const { user_id } = req.body;
+        const user = await Streaks.find({userID: user_id});
     
         if(!user) throw Error
     

@@ -1,15 +1,13 @@
 import { useEffect, useState } from 'react';
 import { useUserContext } from '@/context/AuthContext';
 import { breakStreak, getAllUsers, StreakUpdater } from '@/lib/calls'; // Import your API call function
-import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
+import { Link } from 'react-router-dom';
 
 const Home = () => {
   const { user, isLoading, isAuthenticated } = useUserContext();
   const [allUsers, setAllUsers] = useState([]);
   const [breaks,setBreaks] = useState(false);
-  // let breaks = false;
-  
 
 
 
@@ -17,7 +15,6 @@ const Home = () => {
     const fetchData = async () => {
       try {
         const result = await getAllUsers();
-        console.log(result.allUsers)
         setAllUsers(result.allUsers);
  
       } catch (error) {
@@ -57,8 +54,8 @@ const capitalize = (str:string) => {
 
 
 const streakStyle = 
-  Number(user.streak) === 0 ? 'blur-sm' :
-  Number(user.streak) === 1 ? 'blur-[2px]' : '';
+  Number(user.streak) === 0 ? 'blur-[2px]' :
+  Number(user.streak) === 1 ? 'blur-[1px]' : '';
 
   const memojis = [
     "/assets/memojis/angy.png",
@@ -87,7 +84,10 @@ const streakStyle =
   return (
     <div className='dark:bg-dark-2 dark:text-main text-dark-2 bg-main w-full h-full flex flex-col p-7 gap-4'>
       <div className='flex flex-col gap-10'>
-        <h1 className='h3-semibold '><h1 className='h1-bold'>Hello 👋</h1> Welcome {capitalize(user.name)}</h1>
+        <div className='h3-semibold '>
+          <h2 className='h1-bold'>Hello 👋</h2> 
+          Welcome {capitalize(user.name)}
+          </div>
 
         <div className='w-100 flex justify-center gap-3 '>
           <h1 className={`text-7xl font-bold dark:text-white text-dark-2 ${streakStyle}`}>{user.streak}</h1>
@@ -103,8 +103,8 @@ const streakStyle =
 
       <div className='h-full w-full bg-dark-3 rounded-lg  '>
           <ul className='flex flex-col justify-center items-center gap-1'>
-            {allUsers.map((user:any) => (
-               <li key={user.id} className='flex gap-3 h3-bold w-full rounded-lg justify-center py-5 bg-dark-4 '>
+            {allUsers.map((users:any) => (
+               <Link to={`/profile`} state={{userID: users.id}} key={users.id} className='flex gap-3 h3-bold w-full rounded-lg justify-center py-5 bg-dark-4 '>
                     <img 
                     src={getRandomMemoji(memojis)}
                     alt='memoji'
@@ -113,9 +113,9 @@ const streakStyle =
                     className=''
                     
                     />
-                  <h3 className='w-44 pt-2 dark:text-main text-main'>{user.name}</h3>
-                  <h3 className='pt-2 dark:text-main text-main'>{user.streaks}🔥</h3>
-               </li>
+                  <h3 className='w-44 pt-2 dark:text-main text-main'>{users.name}</h3>
+                  <h3 className='pt-2 dark:text-main text-main'>{users.streaks}🔥</h3>
+               </Link>
             ))}
           </ul>
     

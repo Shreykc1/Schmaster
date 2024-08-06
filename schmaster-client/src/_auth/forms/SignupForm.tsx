@@ -25,20 +25,9 @@ import { useEffect } from "react"
 
 const SignupForm = () => {
   const {toast} = useToast();
-  // const {checkAuthUser, isLoading: isUserLoading} = useUserContext();
+  const { checkAuthUser } = useUserContext();
   const navigate = useNavigate();
 
-  let cookie:any;
-  useEffect(() =>{
-     cookie = Cookies.get('token')
-    if(
-        cookie
-    ) {
-        navigate('/');
-    }
-
-   
-},[]);
 
   const form = useForm<z.infer<typeof SignUpValidation>>({
     resolver: zodResolver(SignUpValidation),
@@ -67,8 +56,8 @@ const SignupForm = () => {
        } 
       
 
-      //  const isLoggedIn = await checkAuthUser();
-       const isLoggedIn = cookie;
+       const isLoggedIn = await checkAuthUser();
+
        if(isLoggedIn){
         form.reset();
         navigate('/');

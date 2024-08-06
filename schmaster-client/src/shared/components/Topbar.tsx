@@ -1,19 +1,26 @@
 import { Button } from '@/components/ui/button';
+import { useUserContext } from '@/context/AuthContext';
 import { logout } from '@/lib/calls';
 import { Link, useLocation, useNavigate } from 'react-router-dom'
-import ThemeToggle from './ThemeToggle';
+
 
 
 
 const Topbar = () => {
-
+  const navigate = useNavigate();
   const location = useLocation();
   const goTo = location.pathname.startsWith("/profile") ? '/' : 'profile'
   const backImg = location.pathname.startsWith("/profile") ? '/assets/icons/back.svg' : '/assets/icons/profile-placeholder.svg'
-  const signOut = () =>{
-    logout()
-  }
+  const { checkAuthUser } = useUserContext();
+  
+  const signOut = async () =>{
+    logout();
+    const isLoggedIn = await checkAuthUser();
 
+    if(!isLoggedIn){
+      navigate('/sign-in');
+     }
+  }
 
 
 
@@ -29,8 +36,6 @@ const Topbar = () => {
               
             />
           </Link>
-
-
 
           <div className='flex gap-4'>
             <Button variant="ghost" className='shad-button_ghost' onClick={ ()=> signOut() }>

@@ -10,7 +10,7 @@ export const getCurrentUser = async (token:any)=>{
       withCredentials: true,
     })  
     .then(function (response) {
-      console.log(response.data.message)
+  
       return response.data.message;
     })
     .catch(function (error) {
@@ -94,6 +94,22 @@ export const getCurrentUser = async (token:any)=>{
   }
 
 
+
+  export const getUserById = async (user_id: any) => {
+    try {
+      const response = await axios.post(
+        'http://localhost:3000/auth/getUserById',
+        { user_id },
+        { withCredentials: true }
+      );
+      return response.data.message;
+    } catch (error) {
+      console.error('Error Getting user by ID:', error);
+      throw error; 
+    }
+  };
+
+
   
 
 
@@ -148,16 +164,15 @@ export const breakStreak = async ()=>{
 }
 
 
-export const getUserStreaks = async ()=>{
-  const token = Cookies.get('token');
+export const getUserStreaks = async (user_id:string)=>{
+  
   return axios.post('http://localhost:3000/streaks/getUserStreaks',{
-    token
+    user_id
   }
   , {
     withCredentials: true,
   })  
   .then(function (response) {
-    console.log(response.data.message)
     return response.data.message;
   })
   .catch(function (error) {

@@ -13,7 +13,7 @@ const AuthLayout = () => {
         <Navigate to="/"/> 
       ): (
         <>
-          <section className='flex flex-1 justify-center items-center flex-col p-10 custom-scollbar'>
+          <section className='flex  bg-dark-2 flex-1 justify-center items-center flex-col p-10 custom-scollbar'>
             <Outlet />
           </section>
 

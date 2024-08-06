@@ -1,15 +1,28 @@
 import { useUserContext } from "@/context/AuthContext";
-import { getUserStreaks } from "@/lib/calls";
+
+import { useGetUserById, useGetUserStreaks } from "@/lib/react-query";
 import ThemeToggle from "@/shared/components/ThemeToggle";
-import { useEffect, useState } from "react";
+import { Loader } from "lucide-react";
+
+import { useLocation, useParams } from "react-router-dom";
+
+
+
+
 
 const Profile = () => {
-  const [allStreaks, setAllStreaks] = useState([]);
-  const { user, isLoading, isAuthenticated } = useUserContext();
 
+  const location = useLocation();
+  const state = location.state as { userID: string };
+  const userID = state ? state.userID : '';
+  const { data, isPending } = useGetUserById(userID || "");
+  const { data: allStreaks, isPending: isStreaksLoading } = useGetUserStreaks(userID || '');
+  const { isLoading, isAuthenticated } = useUserContext();
+
+
+  
   const formatDate = (dateString: any) => {
     const date = new Date(dateString);
-
     const day = String(date.getDate()).padStart(2, "0");
     const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are zero-based
     const year = String(date.getFullYear()).slice(-2); // Get last 2 digits of year
@@ -17,18 +30,9 @@ const Profile = () => {
     return `${day}/${month}/${year}`;
   };
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const result = await getUserStreaks();
-        setAllStreaks(result);
-      } catch (error) {
-        console.error("Failed to fetch users:", error);
-      }
-    };
 
-    fetchData();
-  }, [isAuthenticated]);
+
+
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -54,7 +58,10 @@ const Profile = () => {
   };
 
   return (
-    <div className="w-full h-full flex flex-col p-7 gap-4">
+    <>
+      {
+        isPending ? <div className="w-full flex-center"><Loader/></div> : 
+        <div className="w-full h-full flex flex-col p-7 gap-4">
       <div className="w-full flex flex-col justify-center items-center">
         <img
           src={getRandomMemoji(memojis)}
@@ -63,8 +70,7 @@ const Profile = () => {
           width={250}
           className=""
         />
-
-        <h2 className="h2-bold">{user.email}</h2>
+        <h2 className="h2-bold">{data[0].email}</h2>
       </div>
 
     <div className="flex ">
@@ -74,24 +80,30 @@ const Profile = () => {
 
 
       <div className="h-full w-full bg-dark-3 rounded-lg ">
-        <ul className="flex flex-col justify-center items-center gap-1">
+          {
+            isStreaksLoading ? <div className="w-full flex-center"><Loader/></div> : (
+              <ul className="flex flex-col justify-center items-center gap-1">
             
-          {allStreaks.map((user: any) => (
-            <li
-              key={user.userID}
-              className="flex gap-3 h3-bold w-full rounded-lg justify-evenly py-5 bg-dark-4"
-            >
-              <h3 className="w-44 pt-1  dark:text-main text-main">{formatDate(user.breakDate)}</h3>
-              <h3 className="pt-1  dark:text-main text-main">{user.streaks}🔥</h3>
-            </li>
-          ))}
-        </ul>
+              {allStreaks.map((user: any) => (
+                <li
+                  key={Math.random()}
+                  className="flex gap-3 h3-bold w-full rounded-lg justify-evenly py-5 bg-dark-4"
+                >
+                  <h3 className="w-44 pt-1  dark:text-main text-main">{formatDate(user.breakDate)}</h3>
+                  <h3 className="pt-1  dark:text-main text-main">{user.streaks}🔥</h3>
+                </li>
+              ))}
+            </ul>
+            )
+          }
       </div>
       <div className="flex justify-between">
         <p>Dark mode</p>
         <ThemeToggle />
       </div>
     </div>
+      }
+    </>
   );
 };
 

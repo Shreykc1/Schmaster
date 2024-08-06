@@ -20,6 +20,8 @@ Router.route('/sendToken')
     
 Router.route('/getAllUsers')
     .get(authController.getAllUsers);
-
+    
+Router.route('/getUserById')
+        .post(authController.getUserById);
 
 module.exports = Router;

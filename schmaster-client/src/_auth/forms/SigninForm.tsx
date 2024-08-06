@@ -26,7 +26,7 @@ import { useEffect } from "react"
 const SigninForm = () => {
   const {toast} = useToast();
   const navigate = useNavigate();
-
+  const {checkAuthUser} = useUserContext();
 
   const form = useForm<z.infer<typeof SignInValidation>>({
     resolver: zodResolver(SignInValidation),
@@ -38,7 +38,6 @@ const SigninForm = () => {
  
 
   async function onSubmit(values: z.infer<typeof SignInValidation>) {
-    
     
         const session = await SignIn(
           values.email,
@@ -54,8 +53,8 @@ const SigninForm = () => {
       
 
       
-      //  const isLoggedIn = await checkAuthUser();
-      const isLoggedIn = Cookies.get('token');
+       const isLoggedIn = await checkAuthUser();
+
     
        if(isLoggedIn){
         form.reset();
@@ -79,7 +78,7 @@ const SigninForm = () => {
         <Form {...form}>
 
         <div className="sm:w-420 flex-center flex-col">
-        <h2 className="h3-bold md:h2-bold pt-5 sm:pt-12">
+        <h2 className="h3-bold md:h2-bold pt-5 sm:pt-12 text-main">
           Sign In to your account
         </h2>
 
@@ -123,7 +122,7 @@ const SigninForm = () => {
       </form>
 
             <div className="flex gap-2 mt-5 small-regular">
-              <p >New to Schamster?</p>
+              <p className="text-main">New to Schamster?</p>
               <Link to='/sign-up'>
               <p className="text-primary-500 font-bold"> Sign up</p>
               </Link>

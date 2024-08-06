@@ -29,11 +29,12 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
     const navigate = useNavigate();
 
-    const checkAuthUser = async () => {
+     const checkAuthUser = async () => {
         setIsLoading(true);
         try {
             const token = Cookies.get('token');
             if (token) {
+                setIsAuthenticated(true);
                 const currentAccount = await getCurrentUser(token);
                 if (currentAccount) {
                     setUser({
@@ -42,7 +43,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
                         name: currentAccount.name,
                         streak: currentAccount.streaks,
                     });
-                    setIsAuthenticated(true);
+                    
                     return true;
                 }
             }
@@ -61,7 +62,6 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             const token = Cookies.get('token');
             const isSignInPage = location.pathname === '/sign-in';
             const isSignUpPage = location.pathname === '/sign-up';
-    
             if (!token && !isSignInPage && !isSignUpPage) {
                 navigate('/sign-in');
             } else if (token) {
