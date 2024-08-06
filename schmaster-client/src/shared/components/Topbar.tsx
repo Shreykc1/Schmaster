@@ -1,6 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { useUserContext } from '@/context/AuthContext';
 import { logout } from '@/lib/calls';
+import Cookies from 'js-cookie';
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 
 
@@ -22,12 +23,12 @@ const Topbar = () => {
      }
   }
 
-
+  const usersId = Cookies.get('token');
 
   return (
     <section className='topbar'>
       <div className='flex-between py-5 px-6'>
-          <Link to={goTo} className='flex gap-3 items-center'>
+          <Link to={goTo} state={{userID: usersId}} className='flex gap-3 items-center'>
             <img
               src={backImg}
               alt='logo'

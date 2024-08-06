@@ -1,42 +1,15 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useUserContext } from '@/context/AuthContext';
 import { breakStreak, getAllUsers, StreakUpdater } from '@/lib/calls'; // Import your API call function
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
+import { useBreakStreak, useGetAllUsers } from '@/lib/react-query';
+import { Loader } from 'lucide-react';
 
 const Home = () => {
   const { user, isLoading, isAuthenticated } = useUserContext();
-  const [allUsers, setAllUsers] = useState([]);
-  const [breaks,setBreaks] = useState(false);
-
-
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const result = await getAllUsers();
-        setAllUsers(result.allUsers);
- 
-      } catch (error) {
-        console.error("Failed to fetch users:", error);
-      }
-    };
-
-    fetchData();
-}, [isAuthenticated,breaks]); 
-
-
-
-  const breakStreakk = async () => {
-    try {
-      await breakStreak();
-      setBreaks(true)
-    } catch (error) {
-      console.error("Failed to break streak:", error);
-    }
-  };
-
-
+  const { data: allUsers, isPending: isUsersLoading } = useGetAllUsers();
+  
 
 
 StreakUpdater();
@@ -82,7 +55,11 @@ const streakStyle =
   }
 
   return (
-    <div className='dark:bg-dark-2 dark:text-main text-dark-2 bg-main w-full h-full flex flex-col p-7 gap-4'>
+    <>
+    {
+      isUsersLoading ? <div className='w-full flex-center'><Loader/></div> : 
+      
+      <div className='dark:bg-dark-2 dark:text-main text-dark-2 bg-main w-full h-full flex flex-col p-7 gap-4'>
       <div className='flex flex-col gap-10'>
         <div className='h3-semibold '>
           <h2 className='h1-bold'>Hello 👋</h2> 
@@ -96,14 +73,14 @@ const streakStyle =
         <p className='text-[14px] font-light dark:text-main text-dark-2 text-center'>
           Maintain Streaks & Prove you are a Man! 💪
         </p>
-        <Button className='shad-button_primary' onClick={breakStreakk}>
+        <Button className='shad-button_primary' onClick={() => breakStreak}>
             Break
         </Button>
       </div>
 
       <div className='h-full w-full bg-dark-3 rounded-lg  '>
           <ul className='flex flex-col justify-center items-center gap-1'>
-            {allUsers.map((users:any) => (
+            {allUsers.allUsers.map((users:any) => (
                <Link to={`/profile`} state={{userID: users.id}} key={users.id} className='flex gap-3 h3-bold w-full rounded-lg justify-center py-5 bg-dark-4 '>
                     <img 
                     src={getRandomMemoji(memojis)}
@@ -121,6 +98,8 @@ const streakStyle =
     
       </div>
     </div>
+    }
+    </>
   );
 };
 

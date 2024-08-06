@@ -4,7 +4,7 @@ import { useGetUserById, useGetUserStreaks } from "@/lib/react-query";
 import ThemeToggle from "@/shared/components/ThemeToggle";
 import { Loader } from "lucide-react";
 
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 
 
@@ -20,7 +20,7 @@ const Profile = () => {
   const { isLoading, isAuthenticated } = useUserContext();
 
 
-  
+
   const formatDate = (dateString: any) => {
     const date = new Date(dateString);
     const day = String(date.getDate()).padStart(2, "0");

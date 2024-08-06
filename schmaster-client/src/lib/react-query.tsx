@@ -5,9 +5,28 @@ import {
     useInfiniteQuery,
     
 } from '@tanstack/react-query'
-import { getUserById, getUserStreaks } from './calls';
+import { breakStreak, getAllUsers, getUserById, getUserStreaks } from './calls';
 
 
+export const useGetAllUsers = () => {  
+    return useQuery({
+      queryKey: ['getAllUsers'],
+      queryFn: () => getAllUsers(),
+    });
+  };
+
+
+  export const useBreakStreak = () => { //done
+    const queryClient = useQueryClient();
+    return useMutation({
+      mutationFn: () => breakStreak(),
+      onSuccess: () => {
+        queryClient.invalidateQueries({
+          queryKey: ['useBreakStreak'],
+        });
+      },
+    });
+  };
   
   
 export const useGetUserById = (userID: string) => {
