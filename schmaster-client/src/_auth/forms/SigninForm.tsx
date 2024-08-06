@@ -16,7 +16,7 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { SignIn, SignUp } from "@/lib/calls"
-import { useNavigate } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { useUserContext } from "@/context/AuthContext"
 import { useEffect } from "react"
 
@@ -25,20 +25,8 @@ import { useEffect } from "react"
 
 const SigninForm = () => {
   const {toast} = useToast();
-  // const {checkAuthUser, isLoading: isUserLoading} = useUserContext();
   const navigate = useNavigate();
 
-//   let cookie:any;
-//   useEffect(() =>{
-//      cookie = Cookies.get('token')
-//     if(
-//         cookie
-//     ) {
-//         navigate('/');
-//     }
-
-   
-// },[]);
 
   const form = useForm<z.infer<typeof SignInValidation>>({
     resolver: zodResolver(SignInValidation),
@@ -116,7 +104,7 @@ const SigninForm = () => {
           )}
         />
 
-<FormField
+        <FormField
             control={form.control}
             name="password"
             render={({ field }) => (
@@ -133,6 +121,14 @@ const SigninForm = () => {
               Sign In
           </Button>
       </form>
+
+            <div className="flex gap-2 mt-5 small-regular">
+              <p >New to Schamster?</p>
+              <Link to='/sign-up'>
+              <p className="text-primary-500 font-bold"> Sign up</p>
+              </Link>
+            </div>
+
       </div>
     </Form>
 

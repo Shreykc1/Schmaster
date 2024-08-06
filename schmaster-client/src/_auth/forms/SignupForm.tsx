@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button"
-import { SignInValidation } from "@/validations"
+import { SignUpValidation } from "@/validations"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
@@ -16,7 +16,7 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { SignUp } from "@/lib/calls"
-import { useNavigate } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { useUserContext } from "@/context/AuthContext"
 import { useEffect } from "react"
 
@@ -40,19 +40,21 @@ const SignupForm = () => {
    
 },[]);
 
-  const form = useForm<z.infer<typeof SignInValidation>>({
-    resolver: zodResolver(SignInValidation),
+  const form = useForm<z.infer<typeof SignUpValidation>>({
+    resolver: zodResolver(SignUpValidation),
     defaultValues: {
+      name: "",
       email: "",
       password: "",
     },
   })
  
 
-  async function onSubmit(values: z.infer<typeof SignInValidation>) {
+  async function onSubmit(values: z.infer<typeof SignUpValidation>) {
     
     
         const session = await SignUp(
+          values.name,
           values.email,
           values.password
         );       
@@ -99,6 +101,22 @@ const SignupForm = () => {
         
 
       <form onSubmit={form.handleSubmit(onSubmit)}  className="flex flex-col gap-5 w-full mt-4">
+
+      <FormField
+          control={form.control}
+          name="name"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel  className="shad-form_label">Name</FormLabel>
+              <FormControl>
+                <Input type="string" className="shad-input" {...field} />
+              </FormControl>
+
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
         <FormField
           control={form.control}
           name="email"
@@ -128,9 +146,17 @@ const SignupForm = () => {
             )}
           />
           <Button type="submit" className="shad-button_primary">
-              Sign In
+              Sign up
           </Button>
       </form>
+
+      <div className="flex gap-2 mt-5 small-regular">
+              <p >Already have an account?</p>
+              <Link to='/sign-in'>
+              <p className="text-primary-500 font-bold"> Sign in</p>
+              </Link>
+            </div>
+
       </div>
     </Form>
 

@@ -13,13 +13,14 @@ dotenv.config({path:'./config.env'});
 global.idd;
 const SECRET_KEY = process.env.JWT_SECRET_KEY;
 async function SignUp (req, res)  {
-    const { email, password } = req.body;
+    const { name, email, password } = req.body;
     const hashedPassword = bcrypt.hashSync(password, 10);
     
 
     const token = jwt.sign({ email }, SECRET_KEY, { expiresIn: '1000 days' });
 
     const result = await User.create({
+      name: name,
       email: email,
       password: hashedPassword,
       id: token

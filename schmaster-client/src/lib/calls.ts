@@ -39,8 +39,9 @@ export const getCurrentUser = async (token:any)=>{
   }
 
 
-  export const SignUp = async (email: string, password: string)=>{
+  export const SignUp = async (name:string,email: string, password: string)=>{
     return axios.post('http://localhost:3000/auth/SignUp',{
+        name,
         email,
         password
     }

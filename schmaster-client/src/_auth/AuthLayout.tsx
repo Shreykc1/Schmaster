@@ -1,8 +1,9 @@
+import { useUserContext } from '@/context/AuthContext';
 import { Outlet, Navigate } from 'react-router-dom'
 
 
 const AuthLayout = () => {
-  const isAuthenticated = false
+  const {isAuthenticated} = useUserContext();
 
 
 
@@ -12,7 +13,7 @@ const AuthLayout = () => {
         <Navigate to="/"/> 
       ): (
         <>
-          <section className='flex flex-1 justify-center items-center flex-col p-10'>
+          <section className='flex flex-1 justify-center items-center flex-col p-10 custom-scollbar'>
             <Outlet />
           </section>
 

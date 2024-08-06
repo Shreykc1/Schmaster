@@ -1,5 +1,6 @@
 import { useUserContext } from "@/context/AuthContext";
 import { getUserStreaks } from "@/lib/calls";
+import ThemeToggle from "@/shared/components/ThemeToggle";
 import { useEffect, useState } from "react";
 
 const Profile = () => {
@@ -42,6 +43,10 @@ const Profile = () => {
     "/assets/memojis/grin.png",
     "/assets/memojis/kiss.png",
     "/assets/memojis/star.png",
+    "/assets/memojis/happy.png",
+    "/assets/memojis/laugh.png",
+    "/assets/memojis/shock.png",
+    "/assets/memojis/wink.png",
   ];
   const getRandomMemoji = (arr: any) => {
     const randomIndex = Math.floor(Math.random() * arr.length);
@@ -49,7 +54,7 @@ const Profile = () => {
   };
 
   return (
-    <div className="bg-dark-2 w-full h-full flex flex-col p-7 gap-4">
+    <div className="w-full h-full flex flex-col p-7 gap-4">
       <div className="w-full flex flex-col justify-center items-center">
         <img
           src={getRandomMemoji(memojis)}
@@ -76,11 +81,15 @@ const Profile = () => {
               key={user.userID}
               className="flex gap-3 h3-bold w-full rounded-lg justify-evenly py-5 bg-dark-4"
             >
-              <h3 className="w-44 pt-1">{formatDate(user.breakDate)}</h3>
-              <h3 className="pt-1">{user.streaks}🔥</h3>
+              <h3 className="w-44 pt-1  dark:text-main text-main">{formatDate(user.breakDate)}</h3>
+              <h3 className="pt-1  dark:text-main text-main">{user.streaks}🔥</h3>
             </li>
           ))}
         </ul>
+      </div>
+      <div className="flex justify-between">
+        <p>Dark mode</p>
+        <ThemeToggle />
       </div>
     </div>
   );
