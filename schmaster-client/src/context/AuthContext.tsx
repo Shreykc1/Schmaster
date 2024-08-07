@@ -63,6 +63,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             const isSignInPage = location.pathname === '/sign-in';
             const isSignUpPage = location.pathname === '/sign-up';
             if (!token && !isSignInPage && !isSignUpPage) {
+                setIsAuthenticated(false);
                 navigate('/sign-in');
             } else if (token) {
                 await checkAuthUser();

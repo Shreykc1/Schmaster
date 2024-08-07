@@ -2,6 +2,7 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const dotenv = require("dotenv");
 const mongoose = require("mongoose");
+const { getIo } = require('../socket');
 
 const { User } = require("../Mongoose/Schema");
 mongoose
@@ -101,21 +102,37 @@ async function getAllUsers(req, res) {
   }
 }
 
-async function getUserById(req, res) {
+async function getUserById(req, res,io) {
   try {
-
     const { user_id } = req.body;
-    const user = await User.find({ id: user_id });
 
-    res.status(200).json({
-      message: user,
-    });
+
+    if (!user_id) {
+      return res.status(400).json({ error: 'User ID is required' });
+    }
+
+
+    const user = await User.findOne({ id: user_id }); // Use findOne for a single user
+
+
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+    const io = getIo();
+     
+        io.emit('getUserById', { message: user });
+     
+   
+
+    // Send the user data as a response
+    res.status(200).json({ message: user });
+
   } catch (error) {
-    res.status(404).send({
-      error,
-    });
+    console.error('Error fetching user:', error);
+    res.status(500).json({ error: 'Internal server error' });
   }
 }
+
 
 module.exports = {
   SignUp,

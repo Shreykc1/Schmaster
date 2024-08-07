@@ -64,7 +64,7 @@ const Profile = () => {
           width={250}
           className=""
         />
-        <h2 className="h2-bold">{data[0].email}</h2>
+        <h2 className="h2-bold">{data.email}</h2>
       </div>
 
     <div className="flex ">

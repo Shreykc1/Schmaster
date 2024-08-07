@@ -1,6 +1,7 @@
 import axios from "axios";
 import Cookies from 'js-cookie';
 import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 export const getCurrentUser = async (token:any)=>{
     return axios.post('http://localhost:3000/auth/getCurrentUser',{
@@ -58,7 +59,8 @@ export const getCurrentUser = async (token:any)=>{
   }
 
   export const logout = () => {
-    Cookies.remove('token');
+     Cookies.remove('token');
+    return true
   };
 
 
@@ -102,6 +104,7 @@ export const getCurrentUser = async (token:any)=>{
         { user_id },
         { withCredentials: true }
       );
+      
       return response.data.message;
     } catch (error) {
       console.error('Error Getting user by ID:', error);

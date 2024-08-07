@@ -12,15 +12,13 @@ const Topbar = () => {
   const location = useLocation();
   const goTo = location.pathname.startsWith("/profile") ? '/' : 'profile'
   const backImg = location.pathname.startsWith("/profile") ? '/assets/icons/back.svg' : '/assets/icons/profile-placeholder.svg'
-  const { checkAuthUser } = useUserContext();
-  
-  const signOut = async () =>{
-    logout();
-    const isLoggedIn = await checkAuthUser();
 
-    if(!isLoggedIn){
-      navigate('/sign-in');
-     }
+  const signOut = () =>{
+    const log = logout();
+    if (log){
+      navigate('/sign-in')
+    }
+    
   }
 
   const usersId = Cookies.get('token');

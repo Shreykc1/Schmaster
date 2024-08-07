@@ -1,4 +1,6 @@
 const { User, Streaks } = require('../Mongoose/Schema');
+const { getIo } = require('../socket');
+
 
 const addStreak = async (req, res) => {
     try {
@@ -17,21 +19,28 @@ const addStreak = async (req, res) => {
             currentStreaks = 0;
         }
 
-        const lastStreakUpdate = new Date(user.lastStreakUpdate);
-        lastStreakUpdate.setHours(0, 0, 0, 0);
+        const lastStreakUpdate = user.lastStreakUpdate ? new Date(user.lastStreakUpdate) : null;
+        if (lastStreakUpdate) {
+            lastStreakUpdate.setHours(0, 0, 0, 0);
+        }
 
-        const diffTime = today - lastStreakUpdate;
-        const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24)); // Use floor to avoid partial days
+        const diffTime = lastStreakUpdate ? today - lastStreakUpdate : 0;
+        const diffDays = lastStreakUpdate ? Math.floor(diffTime / (1000 * 60 * 60 * 24)) : 0;
 
-        if (!user.lastStreakUpdate || diffDays > 0) {
+        if (!lastStreakUpdate || diffDays > 0) {
             const newStreakCount = currentStreaks + diffDays;
-            
+
             await User.findOneAndUpdate(
                 { id: token },
                 { $set: { streaks: newStreakCount, lastStreakUpdate: today } }
             );
+
+            const io = getIo();
+            io.emit('newStreak', newStreakCount);
             return res.status(200).send({ message: 'Streaks Updated Successfully', newStreakCount });
         } else {
+            const io = getIo();
+            io.emit('newStreak', currentStreaks);
             return res.status(200).send({ message: 'Streak already updated for today', currentStreaks });
         }
 
@@ -40,6 +49,9 @@ const addStreak = async (req, res) => {
         res.status(500).send({ error: error.message });
     }
 };
+
+module.exports = { addStreak };
+
 
 
 
@@ -60,13 +72,14 @@ const breakStreak = async (req,res) =>{
         );
         }
 
+        const io = getIo();
+        io.emit('newStreak', 0)
         
         return res.status(200).send({ message: 'Streaks Updated Successfully' });
     } catch (error) {
         return res.status(500).send({ message: error });
     }
 }
-
 
 
 const getUserStreaks = async (req,res) => {

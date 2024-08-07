@@ -1,14 +1,20 @@
 // lib/useStreakUpdater.ts
 import { useEffect } from 'react';
 import { addStreak } from '../lib/calls';
+import  Cookies  from 'js-cookie';
+import { useUserContext } from '@/context/AuthContext';
 
 const useStreakUpdater = () => {
+
+  const { isAuthenticated } = useUserContext();
+
   useEffect(() => {
+    
     const updateStreak = async () => {
       await addStreak();
     };
 
-    // Initial call to update streak
+
     updateStreak();
     
     // Set up an interval to update streak daily
@@ -16,7 +22,7 @@ const useStreakUpdater = () => {
 
     
     return () => clearInterval(interval);
-  }, []);
+  }, [isAuthenticated === true  ]);
 };
 
 export default useStreakUpdater;
