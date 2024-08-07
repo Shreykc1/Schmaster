@@ -4,7 +4,7 @@ import { Outlet } from 'react-router-dom'
 
 const RootLayout = () => {
   return (
-    <div className="w-full md:flex md:flex-col">
+    <div className="w-full md:flex md:flex-col overflow-scroll custom-scrollbar ">
           <Topbar />
             <section className="flex flex-1 h-full">
                <Outlet />

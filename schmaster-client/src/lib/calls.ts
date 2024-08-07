@@ -118,7 +118,7 @@ export const getCurrentUser = async (token:any)=>{
   /// ========================= STREAKS +++++++++++++++++++
 
 
-  const addStreak = async () => {
+  export const addStreak = async () => {
     const token = Cookies.get('token');
     try {
       const response = await axios.post('http://localhost:3000/streaks/addStreak', { token }, { withCredentials: true });
@@ -130,20 +130,7 @@ export const getCurrentUser = async (token:any)=>{
     }
   };
 
-
-  // JUST IN CASE IF APP IS LEFT OPEN FOR 24h
-  export const StreakUpdater = () => {
-    useEffect(() => {
-      const interval = setInterval(async () => {
-        await addStreak();
-      }, 24 * 60 * 60 * 1000); 
-  
-      return () => clearInterval(interval);
-    }, []);
-  
-    return null; 
-  };
-
+ 
 
 
 export const breakStreak = async ()=>{

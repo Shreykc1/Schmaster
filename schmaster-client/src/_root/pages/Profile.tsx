@@ -1,12 +1,8 @@
 import { useUserContext } from "@/context/AuthContext";
-
 import { useGetUserById, useGetUserStreaks } from "@/lib/react-query";
 import ThemeToggle from "@/shared/components/ThemeToggle";
 import { Loader } from "lucide-react";
-
 import { useLocation } from "react-router-dom";
-
-
 
 
 
@@ -29,8 +25,6 @@ const Profile = () => {
 
     return `${day}/${month}/${year}`;
   };
-
-
 
 
 
@@ -79,12 +73,12 @@ const Profile = () => {
     </div>
 
 
-      <div className="h-full w-full bg-dark-3 rounded-lg ">
+      <div className="h-auto w-full bg-dark-3 rounded-lg ">
           {
             isStreaksLoading ? <div className="w-full flex-center"><Loader/></div> : (
               <ul className="flex flex-col justify-center items-center gap-1">
             
-              {allStreaks.map((user: any) => (
+              {allStreaks.reverse().slice(0,7).map((user: any) => (
                 <li
                   key={Math.random()}
                   className="flex gap-3 h3-bold w-full rounded-lg justify-evenly py-5 bg-dark-4"
@@ -97,8 +91,8 @@ const Profile = () => {
             )
           }
       </div>
-      <div className="flex justify-between">
-        <p>Dark mode</p>
+      <div className="flex justify-between pb-14 pt-7">
+        <p className="font-semibold">Dark mode</p>
         <ThemeToggle />
       </div>
     </div>
