@@ -32,10 +32,8 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
      const checkAuthUser = async () => {
         setIsLoading(true);
         try {
-            const token = Cookies.get('token');
-            if (token) {
                 setIsAuthenticated(true);
-                const currentAccount = await getCurrentUser(token);
+                const currentAccount = await getCurrentUser();
                 if (currentAccount) {
                     setUser({
                         id: currentAccount.id,
@@ -46,7 +44,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
                     
                     return true;
                 }
-            }
+            
             return false;
         } catch (error) {
             console.log(error);

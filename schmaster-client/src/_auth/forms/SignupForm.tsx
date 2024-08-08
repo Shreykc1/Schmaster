@@ -4,7 +4,6 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { useToast } from "@/components/ui/use-toast"
-import Cookies from 'js-cookie';
 import {
   Form,
   FormControl,
@@ -18,7 +17,7 @@ import { Input } from "@/components/ui/input"
 import { SignUp } from "@/lib/calls"
 import { Link, useNavigate } from "react-router-dom"
 import { useUserContext } from "@/context/AuthContext"
-import { useEffect } from "react"
+
 
 
 
@@ -41,7 +40,6 @@ const SignupForm = () => {
 
   async function onSubmit(values: z.infer<typeof SignUpValidation>) {
     
-    
         const session = await SignUp(
           values.name,
           values.email,
@@ -56,17 +54,16 @@ const SignupForm = () => {
        } 
       
 
-       const isLoggedIn = await checkAuthUser();
-
-       if(isLoggedIn){
+       
+       const isAuth = await checkAuthUser();
+       if(isAuth){
         form.reset();
         navigate('/');
        }
        else{
-      
         return  toast({
-          title: "Sign in failed. Please try again.",
-          description: "Sorry for the inconvinience 😇",
+          title: "Sign up failed. Please try again.",
+          description: "Email Already Exists 😇",
         })
        }
 
@@ -80,6 +77,14 @@ const SignupForm = () => {
         <Form {...form}>
 
         <div className="sm:w-420 flex-center flex-col">
+
+        <img 
+            src="/assets/images/logo.svg" 
+            alt="logo" 
+            width={400}
+            className="mb-5 "
+            />
+
         <h2 className="h3-bold md:h2-bold pt-5 sm:pt-12">
           Sign Up to your account
         </h2>

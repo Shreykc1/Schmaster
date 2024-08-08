@@ -15,10 +15,9 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { SignIn, SignUp } from "@/lib/calls"
+import { SignIn } from "@/lib/calls"
 import { Link, useNavigate } from "react-router-dom"
 import { useUserContext } from "@/context/AuthContext"
-import { useEffect } from "react"
 
 
 
@@ -43,7 +42,7 @@ const SigninForm = () => {
           values.email,
           values.password
         );       
-
+        
        if (!session){
         return toast({
           title: "Sign in failed. Please try again.",
@@ -62,7 +61,7 @@ const SigninForm = () => {
        }
        else{
       
-        return  toast({
+        return toast({
           title: "Sign in failed. Please try again.",
           description: "Sorry for the inconvinience 😇",
         })
@@ -78,6 +77,16 @@ const SigninForm = () => {
         <Form {...form}>
 
         <div className="sm:w-420 flex-center flex-col">
+
+          
+            <img 
+            src="/assets/images/logo.svg" 
+            alt="logo" 
+            width={400}
+            className="mb-5 "
+            />
+          
+
         <h2 className="h3-bold md:h2-bold pt-5 sm:pt-12 text-main">
           Sign In to your account
         </h2>

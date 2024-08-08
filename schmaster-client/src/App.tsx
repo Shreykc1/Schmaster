@@ -4,6 +4,7 @@ import SignupForm from "./_auth/forms/SignupForm";
 import Home from "./_root/pages/Home";
 import Profile from "./_root/pages/Profile";
 import RootLayout from "./_root/RootLayout";
+import { Toaster } from "./components/ui/toaster";
 import "./globals.css";
 import { Route, Routes } from "react-router-dom";
 
@@ -24,6 +25,7 @@ const App = () => {
           <Route path="/profile" element={<Profile />} /> 
         </Route>
       </Routes>
+
     </main>
   );
 };

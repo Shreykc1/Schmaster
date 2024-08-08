@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button';
-import { useUserContext } from '@/context/AuthContext';
+import { useToast } from '@/components/ui/use-toast';
 import { logout } from '@/lib/calls';
 import Cookies from 'js-cookie';
 import { Link, useLocation, useNavigate } from 'react-router-dom'
@@ -10,15 +10,20 @@ import { Link, useLocation, useNavigate } from 'react-router-dom'
 const Topbar = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { toast } = useToast();
   const goTo = location.pathname.startsWith("/profile") ? '/' : 'profile'
   const backImg = location.pathname.startsWith("/profile") ? '/assets/icons/back.svg' : '/assets/icons/profile-placeholder.svg'
 
-  const signOut = () =>{
-    const log = logout();
+
+  const signOut = async() =>{
+    const log = await logout();
     if (log){
-      navigate('/sign-in')
+      return toast({
+        title: "Logged out successfully!",
+        description: "Close the Application...",
+      })
+      navigate('/sign-in');
     }
-    
   }
 
   const usersId = Cookies.get('token');
@@ -35,6 +40,7 @@ const Topbar = () => {
               
             />
           </Link>
+
 
           <div className='flex gap-4'>
             <Button variant="ghost" className='shad-button_ghost' onClick={ ()=> signOut() }>

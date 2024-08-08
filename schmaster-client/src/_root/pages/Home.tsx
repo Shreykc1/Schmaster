@@ -1,7 +1,7 @@
 import { useUserContext } from '@/context/AuthContext';
 import { breakStreak } from '@/lib/calls'; // Import your API call function
 import { Button } from '@/components/ui/button';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useGetAllUsers, useGetUserById } from '@/lib/react-query';
 import { Loader } from 'lucide-react';
 import useStreakUpdater from '@/hooks/useStreakUpdater';
@@ -19,14 +19,16 @@ const Home = () => {
   const { isAuthenticated } = useUserContext();
   const token = Cookies.get('token');
   const { data:userr, isPending: isLoading } = useGetUserById(token!);
-  const { data: allUsers, isPending: isUsersLoading } = useGetAllUsers();
+  const { isPending: isUsersLoading,refetch: refetchAllUsers } = useGetAllUsers();
 
+  const [ allUsers, setAllUsers ] = useState([]);
   const [streak, setStreak] = useState(()=> !isLoading ? userr.streaks : 0);
-
   const [breaks, setBreak] = useState(false);
+
   const breakStreakk = async () => {
     try {
       await breakStreak();
+      refetchAllUsers()
       setBreak(!breaks);
     } catch (error) {
       console.error("Failed to break streak:", error);
@@ -39,15 +41,19 @@ const Home = () => {
 
 
   useEffect(() => {
-     socket.on('connect',()=>{
-      console.log(socket.connected)
-    })
+      socket.on('connect',()=>{
+      
+    });
      
       socket.on('newStreak', (data) => {
-        console.log('Data received:', data); 
         setStreak(data);
     });
+
+      socket.on('getAllUsers', (data) => {
+      setAllUsers(data);
+  });
    
+
     
     return () => {
         socket.off('newStreak');
@@ -89,6 +95,10 @@ const capitalize = (str:string) => {
       return <div>Loading....</div>
   }
 
+  if (isUsersLoading) {
+    return <div>Loading....</div>
+}
+
 
   if (!isAuthenticated) {
     return <div>You are not authenticated</div>;
@@ -121,7 +131,7 @@ const capitalize = (str:string) => {
 
       <div className='h-auto w-full bg-dark-3 rounded-lg '>
           <ul className='flex flex-col justify-center items-center gap-1'>
-            {allUsers.allUsers.map((users:any) => (
+            {allUsers.map((users:any) => (
                <Link to={`/profile`} state={{userID: users.id}} key={users.id} className='flex gap-3 h3-bold w-full rounded-lg justify-center py-5 bg-dark-4 '>
                     <img 
                     src={getRandomMemoji(memojis)}

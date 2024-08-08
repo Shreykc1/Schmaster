@@ -13,7 +13,7 @@ const Profile = () => {
   const userID = state ? state.userID : '';
   const { data, isPending } = useGetUserById(userID || "");
   const { data: allStreaks, isPending: isStreaksLoading } = useGetUserStreaks(userID || '');
-  const { isLoading, isAuthenticated } = useUserContext();
+  const { isLoading } = useUserContext();
 
 
 
@@ -32,9 +32,11 @@ const Profile = () => {
     return <div>Loading...</div>;
   }
 
-  if (!isAuthenticated) {
-    return <div>You are not authenticated</div>;
+  if (isStreaksLoading) {
+    return <div>Loading...</div>;
   }
+
+
 
   const memojis = [
     "/assets/memojis/angy.png",
@@ -46,6 +48,7 @@ const Profile = () => {
     "/assets/memojis/shock.png",
     "/assets/memojis/wink.png",
   ];
+
   const getRandomMemoji = (arr: any) => {
     const randomIndex = Math.floor(Math.random() * arr.length);
     return arr[randomIndex];

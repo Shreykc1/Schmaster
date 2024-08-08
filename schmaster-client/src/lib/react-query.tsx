@@ -43,5 +43,9 @@ export const useGetUserById = (userID: string) => {
       queryKey: ['getUserStreaks', userID],
       queryFn: () => getUserStreaks(userID),
       enabled: !!userID,
+      refetchOnMount: 'always', // Refetch data every time the component mounts
+      refetchOnWindowFocus: true, // Refetch data if the window is focused
+      staleTime: 0, // Data is considered stale immediately
     });
   };
+  

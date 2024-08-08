@@ -3,11 +3,8 @@ import Cookies from 'js-cookie';
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-export const getCurrentUser = async (token:any)=>{
-    return axios.post('http://localhost:3000/auth/getCurrentUser',{
-      token
-    }
-    , {
+export const getCurrentUser = async ()=>{
+    return axios.get('http://localhost:3000/auth/getCurrentUser', {
       withCredentials: true,
     })  
     .then(function (response) {
@@ -24,18 +21,16 @@ export const getCurrentUser = async (token:any)=>{
     
     return axios.post('http://localhost:3000/auth/SignIn',{
         email,
-        password,
-        
+        password,    
     }
     , {
       withCredentials: true,
     })  
     .then(function (response) {
-      Cookies.set('token',response.data.token);
       return response.data.isSign;
     })
     .catch(function (error) {
-      return error;
+      return error.data;
   });
   }
 
@@ -50,31 +45,18 @@ export const getCurrentUser = async (token:any)=>{
       withCredentials: true,
     })  
     .then(function (response) {
-      Cookies.set('token',response.data.token)
-      return response.data.message;
+      return response.data.isSign;
     })
     .catch(function (error) {
-      return error;
+      return error.data;
   });
   }
 
-  export const logout = () => {
-     Cookies.remove('token');
-    return true
-  };
+  export const logout = async ()=>{
 
-
-
- const sendToken = async (id:string)=>{
-    
-    return axios.post('http://localhost:3000/auth/sendToken',{
-        id
-    }
-    , {
-      withCredentials: true,
-    })  
+    return axios.get('http://localhost:3000/auth/logout',{withCredentials:true})
     .then(function (response) {
-      return response.data;
+      return response.data.message;
     })
     .catch(function (error) {
       return error;
@@ -85,9 +67,8 @@ export const getCurrentUser = async (token:any)=>{
 
   export const getAllUsers = async ()=>{
 
-    return axios.get('http://localhost:3000/auth/getAllUsers')  
+    return axios.get('http://localhost:3000/auth/getAllUsers',{withCredentials:true})
     .then(function (response) {
-      
       return response.data;
     })
     .catch(function (error) {
@@ -122,9 +103,11 @@ export const getCurrentUser = async (token:any)=>{
 
 
   export const addStreak = async () => {
-    const token = Cookies.get('token');
+
     try {
-      const response = await axios.post('http://localhost:3000/streaks/addStreak', { token }, { withCredentials: true });
+      const response = await axios.post('http://localhost:3000/streaks/addStreak', { 
+        
+       }, { withCredentials: true });
       console.log(response.data.message);
       return response.data.message;
     } catch (error) {
@@ -137,9 +120,9 @@ export const getCurrentUser = async (token:any)=>{
 
 
 export const breakStreak = async ()=>{
-    const token = Cookies.get('token');
+
     return axios.post('http://localhost:3000/streaks/breakStreak',{
-      token
+      
     }
     , {
       withCredentials: true,

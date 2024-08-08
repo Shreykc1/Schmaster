@@ -4,7 +4,8 @@ const { getIo } = require('../socket');
 
 const addStreak = async (req, res) => {
     try {
-        const { token, testDate } = req.body;
+        const { testDate } = req.body;
+        const token = req.cookies.token;
         const user = await User.findOne({ id: token });
 
         if (!user) {
@@ -54,11 +55,21 @@ module.exports = { addStreak };
 
 
 
-
+function protect(req, res) {
+    const token = req.cookies.token;
+  
+    if (!token) return res.status(401).json({ message: "No token provided" });
+  
+    jwt.verify(token, SECRET_KEY, (err, decoded) => {
+      if (err) return res.status(401).json({ message: "Invalid token" });
+  
+      res.json({ message: "Protected data", user: decoded.username });
+    });
+  }
 
 const breakStreak = async (req,res) =>{
     try {
-        const { token } = req.body;
+        const token = req.cookies.token;
         const found = await User.findOne({id: token});
         if (found){
             const pushStreak = await Streaks.create({
