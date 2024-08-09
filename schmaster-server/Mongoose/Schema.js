@@ -47,4 +47,5 @@ const Streaks = mongoose.model("streaks", streaksSchema)
 const User = mongoose.model("user", userSchema);
 
 
+  
 module.exports = { User, Streaks };

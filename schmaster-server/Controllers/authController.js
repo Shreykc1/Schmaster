@@ -5,9 +5,7 @@ const mongoose = require("mongoose");
 const { getIo } = require('../socket');
 
 const { User } = require("../Mongoose/Schema");
-mongoose
-  .connect("mongodb://127.0.0.1:27017/Schmaster")
-  .then(() => console.log("Database Connected!"));
+
 
 dotenv.config({ path: "./config.env" });
 

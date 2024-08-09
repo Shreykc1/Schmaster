@@ -22,8 +22,8 @@ const Topbar = () => {
         title: "Logged out successfully!",
         description: "Close the Application...",
       })
-      navigate('/sign-in');
     }
+  
   }
 
   const usersId = Cookies.get('token');
