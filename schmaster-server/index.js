@@ -10,7 +10,7 @@ const streaksRouter = require('./Routes/streaksRouter');
 const mongoose = require("mongoose");
 // Configure CORS
 const corsOptions = {
-    origin: 'http://localhost:5173', 
+    origin: ['http://localhost:5173','https://schmaster.vercel.app/'], 
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type', 'authToken'],
     credentials: true 

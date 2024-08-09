@@ -9,7 +9,7 @@ const { User } = require("../Mongoose/Schema");
 
 dotenv.config({ path: "./config.env" });
 
-const SECRET_KEY = process.env.JWT_SECRET_KEY;
+const SECRET_KEY = process.env.JWT_SECRET_KEY || 'dijajijojoda'
 async function SignUp(req, res) {
  try {
   const { name, email, password } = req.body;
