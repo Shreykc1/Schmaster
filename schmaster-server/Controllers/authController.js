@@ -23,7 +23,7 @@ async function SignUp(req, res) {
     password: hashedPassword,
     id: token,
   });
-
+  
   if (!result) res.status(401).json({ message: "Email Already Exists.." });
   res.cookie('token',token)
   res.status(200).json({
@@ -40,6 +40,7 @@ async function SignIn(req, res) {
   const { email, password } = req.body;
 
   const user = await User.findOne({ email });
+  
   let token;
   if (!user || !bcrypt.compareSync(password, user.password)) {
     return res.status(401).json({ message: "Invalid email or password" });

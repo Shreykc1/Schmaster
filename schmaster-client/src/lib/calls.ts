@@ -1,10 +1,7 @@
 import axios from "axios";
-import Cookies from 'js-cookie';
-import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 
 export const getCurrentUser = async ()=>{
-    return axios.get('http://localhost:3000/auth/getCurrentUser', {
+    return axios.get(`${import.meta.env.VITE_REACT_URL}/auth/getCurrentUser`, {
       withCredentials: true,
     })  
     .then(function (response) {
@@ -19,7 +16,7 @@ export const getCurrentUser = async ()=>{
 
   export const SignIn = async (email: string, password: string)=>{
     
-    return axios.post('http://localhost:3000/auth/SignIn',{
+    return axios.post(`${import.meta.env.VITE_REACT_URL}/auth/SignIn`,{
         email,
         password,    
     }
@@ -36,7 +33,7 @@ export const getCurrentUser = async ()=>{
 
 
   export const SignUp = async (name:string,email: string, password: string)=>{
-    return axios.post('http://localhost:3000/auth/SignUp',{
+    return axios.post(`${import.meta.env.VITE_REACT_URL}/auth/SignUp`,{
         name,
         email,
         password
@@ -54,7 +51,7 @@ export const getCurrentUser = async ()=>{
 
   export const logout = async ()=>{
 
-    return axios.get('http://localhost:3000/auth/logout',{withCredentials:true})
+    return axios.get(`${import.meta.env.VITE_REACT_URL}/auth/logout`,{withCredentials:true})
     .then(function (response) {
       return response.data.message;
     })
@@ -67,7 +64,7 @@ export const getCurrentUser = async ()=>{
 
   export const getAllUsers = async ()=>{
 
-    return axios.get('http://localhost:3000/auth/getAllUsers',{withCredentials:true})
+    return axios.get(`${import.meta.env.VITE_REACT_URL}/auth/getAllUsers`,{withCredentials:true})
     .then(function (response) {
       return response.data;
     })
@@ -81,7 +78,7 @@ export const getCurrentUser = async ()=>{
   export const getUserById = async (user_id: any) => {
     try {
       const response = await axios.post(
-        'http://localhost:3000/auth/getUserById',
+        `${import.meta.env.VITE_REACT_URL}/auth/getUserById`,
         { user_id },
         { withCredentials: true }
       );
@@ -105,7 +102,7 @@ export const getCurrentUser = async ()=>{
   export const addStreak = async () => {
 
     try {
-      const response = await axios.post('http://localhost:3000/streaks/addStreak', { 
+      const response = await axios.post(`${import.meta.env.VITE_REACT_URL}/streaks/addStreak`, { 
         
        }, { withCredentials: true });
       console.log(response.data.message);
@@ -121,7 +118,7 @@ export const getCurrentUser = async ()=>{
 
 export const breakStreak = async ()=>{
 
-    return axios.post('http://localhost:3000/streaks/breakStreak',{
+    return axios.post(`${import.meta.env.VITE_REACT_URL}/streaks/breakStreak`,{
       
     }
     , {
@@ -139,7 +136,7 @@ export const breakStreak = async ()=>{
 
 export const getUserStreaks = async (user_id:string)=>{
   
-  return axios.post('http://localhost:3000/streaks/getUserStreaks',{
+  return axios.post(`${import.meta.env.VITE_REACT_URL}/streaks/getUserStreaks`,{
     user_id
   }
   , {
