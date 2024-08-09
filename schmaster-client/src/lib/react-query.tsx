@@ -2,7 +2,6 @@ import {
     useQuery,
     useMutation,
     useQueryClient,
-    useInfiniteQuery,
     
 } from '@tanstack/react-query'
 import { breakStreak, getAllUsers, getUserById, getUserStreaks } from './calls';

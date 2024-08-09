@@ -1,7 +1,6 @@
 // lib/useStreakUpdater.ts
 import { useEffect } from 'react';
 import { addStreak } from '../lib/calls';
-import  Cookies  from 'js-cookie';
 import { useUserContext } from '@/context/AuthContext';
 
 const useStreakUpdater = () => {

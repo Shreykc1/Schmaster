@@ -2,13 +2,12 @@ import { Button } from '@/components/ui/button';
 import { useToast } from '@/components/ui/use-toast';
 import { logout } from '@/lib/calls';
 import Cookies from 'js-cookie';
-import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 
 
 
 
 const Topbar = () => {
-  const navigate = useNavigate();
   const location = useLocation();
   const { toast } = useToast();
   const goTo = location.pathname.startsWith("/profile") ? '/' : 'profile'
