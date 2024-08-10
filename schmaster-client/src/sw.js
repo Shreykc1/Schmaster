@@ -12,11 +12,14 @@ self.addEventListener('install', (event) => {
     );
   });
   
-  self.addEventListener('fetch', (event) => {
+  self.addEventListener('fetch', event => {
     event.respondWith(
-      caches.match(event.request).then((response) => {
-        return response || fetch(event.request);
+      fetch(event.request).catch(error => {
+        console.error('Fetch failed; returning offline page instead.', error);
+        return caches.match(event.request)
+          .then(response => response || caches.match('/offline.html'));
       })
     );
   });
+  
   
