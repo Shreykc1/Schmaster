@@ -24,7 +24,7 @@
 
 
 self.addEventListener('fetch', event => {
-  if (event.request.url.startsWith('https://your-backend-url')) {
+  if (event.request.url.startsWith('https://13.200.203.23:3000/' || 'https://13.200.203.23')) {
     // Skip handling these requests to test
     return;
   }
