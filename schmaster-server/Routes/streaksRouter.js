@@ -5,15 +5,15 @@ const streaksController = require('../Controllers/streaksController');
 const authController = require('../Controllers/authController');
 
 Router.route('/addStreak')
-    .post(authController.protect,streaksController.addStreak);
+    .post(streaksController.addStreak);
 
 
 Router.route('/breakStreak')
-    .post(authController.protect,streaksController.breakStreak);
+    .post(streaksController.breakStreak);
 
 
 Router.route('/getUserStreaks')
-    .post(authController.protect,streaksController.getUserStreaks);
+    .post(streaksController.getUserStreaks);
 
     
 module.exports = Router;

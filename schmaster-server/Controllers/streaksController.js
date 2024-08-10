@@ -4,8 +4,7 @@ const { getIo } = require('../socket');
 
 const addStreak = async (req, res) => {
     try {
-        const { testDate } = req.body;
-        const token = req.cookies.token;
+        const { token, testDate } = req.body;
         const user = await User.findOne({ id: token });
 
         if (!user) {
@@ -56,7 +55,7 @@ module.exports = { addStreak };
 
 
 function protect(req, res) {
-    const token = req.cookies.token;
+    const { token } = req.body;
   
     if (!token) return res.status(401).json({ message: "No token provided" });
   
@@ -69,7 +68,7 @@ function protect(req, res) {
 
 const breakStreak = async (req,res) =>{
     try {
-        const token = req.cookies.token;
+        const { token } = req.body;
         const found = await User.findOne({id: token});
         if (found){
             const pushStreak = await Streaks.create({

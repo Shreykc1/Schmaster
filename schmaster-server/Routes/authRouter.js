@@ -12,13 +12,13 @@ Router.route('/SignUp')
     .post(authController.SignUp);
 
 Router.route('/getCurrentUser')
-    .get(authController.protect,authController.getCurrentUser);
+    .get(authController.getCurrentUser);
     
 Router.route('/getAllUsers')
-    .get(authController.protect,authController.getAllUsers);
+    .get(authController.getAllUsers);
     
 Router.route('/getUserById')
-        .post(authController.protect,authController.getUserById);
+        .post(authController.getUserById);
 
 Router.route('/logout')
         .get(authController.logout);

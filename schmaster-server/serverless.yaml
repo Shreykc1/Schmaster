@@ -1,0 +1,31 @@
+service: my-express-app
+
+provider:
+  name: aws
+  runtime: nodejs20.x
+  region: ap-south-1
+  environment:
+    MONGODB_URI: "mongodb+srv://shreykc1:shreejibapa@cluster0.ohtzt.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+
+functions:
+  app:
+    handler: index.handler
+    events:
+      - http:
+          path: /
+          method: any
+      - http:
+          path: /{proxy+}
+          method: any
+
+plugins:
+  - serverless-offline
+
+package:
+  exclude:
+    - .gitignore
+    - .git/**
+    - README.md
+
+custom:
+  stage: dev

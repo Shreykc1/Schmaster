@@ -25,9 +25,9 @@ async function SignUp(req, res) {
   });
   
   if (!result) res.status(401).json({ message: "Email Already Exists.." });
-  res.cookie('token',token)
   res.status(200).json({
     isSign: true,
+    token,
   });
  } catch (error) {
     res.send(error)
@@ -53,7 +53,6 @@ async function SignIn(req, res) {
   } else {
     token = jwt.sign({ email }, SECRET_KEY, { expiresIn: "1000 days" });
   }
-  res.cookie('token',token)
   res.json({ token, isSign: true });
  } catch (error) {
     res.send(
@@ -66,7 +65,7 @@ async function SignIn(req, res) {
 
 async function getCurrentUser(req, res) {
   try {
-    const token = req.cookies.token;
+    const { token } = req.body;
 
     const currentUser = await User.findOne({ id: token });
 
@@ -144,34 +143,34 @@ async function logout(req,res){
 
 
 
-async function protect(req, res, next) {
-  try {
-    const token = req.cookies.token;
+// async function protect(req, res, next) {
+//   try {
+//     const token = req.cookies.token;
 
-    if (!token) {
-      return res.status(401).json({ message: "No token provided, authorization denied" });
-    }
+//     if (!token) {
+//       return res.status(401).json({ message: "No token provided, authorization denied" });
+//     }
 
-    jwt.verify(token, SECRET_KEY, async (err, decoded) => {
-      if (err) {
-        return res.status(401).json({ message: "Token is not valid" });
-      }
+//     jwt.verify(token, SECRET_KEY, async (err, decoded) => {
+//       if (err) {
+//         return res.status(401).json({ message: "Token is not valid" });
+//       }
 
-      const user = await User.findOne({ id: token });
-      if (!user) {
-        return res.status(404).json({ message: "User not found" });
-      }
+//       const user = await User.findOne({ id: token });
+//       if (!user) {
+//         return res.status(404).json({ message: "User not found" });
+//       }
 
       
-      req.user = user;
+//       req.user = user;
 
    
-      next();
-    });
-  } catch (error) {
-    return res.status(500).json({ message: "Server Error", error: error.message });
-  }
-}
+//       next();
+//     });
+//   } catch (error) {
+//     return res.status(500).json({ message: "Server Error", error: error.message });
+//   }
+// }
 
 
 
@@ -179,7 +178,6 @@ async function protect(req, res, next) {
 module.exports = {
   SignUp,
   SignIn,
-  protect,
   getCurrentUser,
   getAllUsers,
   getUserById,

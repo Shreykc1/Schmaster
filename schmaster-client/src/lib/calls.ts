@@ -1,11 +1,10 @@
 import axios from "axios";
-
+import Cookies from "js-cookie";
 export const getCurrentUser = async ()=>{
     return axios.get(`${import.meta.env.VITE_REACT_URL}/auth/getCurrentUser`, {
       withCredentials: true,
     })  
     .then(function (response) {
-  
       return response.data.message;
     })
     .catch(function (error) {
@@ -24,6 +23,7 @@ export const getCurrentUser = async ()=>{
       withCredentials: true,
     })  
     .then(function (response) {
+      Cookies.set('token',response.data.token)
       return response.data.isSign;
     })
     .catch(function (error) {
@@ -42,6 +42,7 @@ export const getCurrentUser = async ()=>{
       withCredentials: true,
     })  
     .then(function (response) {
+      Cookies.set('token',response.data.token)
       return response.data.isSign;
     })
     .catch(function (error) {
@@ -49,15 +50,10 @@ export const getCurrentUser = async ()=>{
   });
   }
 
-  export const logout = async ()=>{
+  export const logout = ()=>{
 
-    return axios.get(`${import.meta.env.VITE_REACT_URL}/auth/logout`,{withCredentials:true})
-    .then(function (response) {
-      return response.data.message;
-    })
-    .catch(function (error) {
-      return error;
-  });
+    Cookies.remove('token');
+
   }
   
 
@@ -100,10 +96,10 @@ export const getCurrentUser = async ()=>{
 
 
   export const addStreak = async () => {
-
+    const token = Cookies.get('token');
     try {
       const response = await axios.post(`${import.meta.env.VITE_REACT_URL}/streaks/addStreak`, { 
-        
+        token
        }, { withCredentials: true });
       console.log(response.data.message);
       return response.data.message;
@@ -117,9 +113,9 @@ export const getCurrentUser = async ()=>{
 
 
 export const breakStreak = async ()=>{
-
+    const token = Cookies.get('token')
     return axios.post(`${import.meta.env.VITE_REACT_URL}/streaks/breakStreak`,{
-      
+      token
     }
     , {
       withCredentials: true,
