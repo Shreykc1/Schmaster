@@ -51,9 +51,8 @@ export const getCurrentUser = async ()=>{
   }
 
   export const logout = ()=>{
-
     Cookies.remove('token');
-
+    return true
   }
   
 

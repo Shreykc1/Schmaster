@@ -14,8 +14,8 @@ const Topbar = () => {
   const backImg = location.pathname.startsWith("/profile") ? '/assets/icons/back.svg' : '/assets/icons/profile-placeholder.svg'
 
 
-  const signOut = async() =>{
-    const log = await logout();
+  const signOut = () =>{
+    const log = logout();
     if (log){
       return toast({
         title: "Logged out successfully!",
